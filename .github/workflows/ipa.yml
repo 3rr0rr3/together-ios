@@ -28,7 +28,7 @@ jobs:
           APP=device-build/Build/Products/Release-iphoneos/Together.app
           test -x "$APP/Together"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleSupportedPlatforms:0' "$APP/Info.plist")" = "iPhoneOS"
-          xcrun lipo -verify_arch arm64 "$APP/Together"
+          xcrun lipo "$APP/Together" -verify_arch arm64
           xcrun vtool -show-build "$APP/Together" | tee platform.txt
           grep -Eq 'platform[[:space:]]+IOS$' platform.txt
           mkdir -p package/Payload

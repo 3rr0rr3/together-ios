@@ -1,0 +1,38 @@
+{
+  "name": "Together",
+  "identifier": "com.3rr0rr3.together.source",
+  "sourceURL": "https://raw.githubusercontent.com/3rr0rr3/together-ios/main/sideStore.json",
+  "subtitle": "Our memories, kept with love",
+  "website": "https://github.com/3rr0rr3/together-ios",
+  "tintColor": "#912E4D",
+  "apps": [
+    {
+      "name": "Together",
+      "bundleIdentifier": "com.example.together",
+      "developerName": "3rr0rr3",
+      "localizedDescription": "A private, on-device memory album for couples. Save up to 20 photos per memory, edit your moments, and celebrate special dates.",
+      "iconURL": "https://avatars.githubusercontent.com/u/134807656?v=4",
+      "tintColor": "#912E4D",
+      "version": "1.1",
+      "versionDate": "2026-10-16",
+      "downloadURL": "https://github.com/3rr0rr3/together-ios/releases/download/sideload-4-1/Together-unsigned.ipa",
+      "size": 189735,
+      "versions": [
+        {
+          "version": "1.1",
+          "buildVersion": "2",
+          "date": "2026-10-16",
+          "localizedDescription": "Multiple photos per memory, memory editing, and a romantic blush interface.",
+          "downloadURL": "https://github.com/3rr0rr3/together-ios/releases/download/sideload-4-1/Together-unsigned.ipa",
+          "size": 189735,
+          "minOSVersion": "17.0"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      }
+    }
+  ],
+  "news": []
+}

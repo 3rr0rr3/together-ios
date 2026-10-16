@@ -6,7 +6,10 @@ struct TogetherApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(store)
+            ContentView()
+                .environmentObject(store)
+                // Keep system text and sheets consistent with the cream-and-white palette.
+                .preferredColorScheme(.light)
         }
     }
 }

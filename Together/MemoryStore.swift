@@ -6,7 +6,39 @@ struct Memory: Identifiable, Codable {
     var title: String
     var note: String
     var date: Date
-    var photo: Data?
+    var photos: [Data]
+
+    init(id: UUID = UUID(), title: String, note: String, date: Date, photos: [Data] = []) {
+        self.id = id
+        self.title = title
+        self.note = note
+        self.date = date
+        self.photos = photos
+    }
+
+    private enum CodingKeys: String, CodingKey { case id, title, note, date, photos, photo }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(UUID.self, forKey: .id)
+        title = try values.decode(String.self, forKey: .title)
+        note = try values.decode(String.self, forKey: .note)
+        date = try values.decode(Date.self, forKey: .date)
+        if let collection = try values.decodeIfPresent([Data].self, forKey: .photos) {
+            photos = collection
+        } else {
+            photos = try values.decodeIfPresent(Data.self, forKey: .photo).map { [$0] } ?? []
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        try values.encode(id, forKey: .id)
+        try values.encode(title, forKey: .title)
+        try values.encode(note, forKey: .note)
+        try values.encode(date, forKey: .date)
+        try values.encode(photos, forKey: .photos)
+    }
 }
 
 struct Occasion: Identifiable, Codable {
@@ -36,10 +68,11 @@ final class MemoryStore: ObservableObject {
         var occasions: [Occasion]
     }
 
-    private let file = URL.documentsDirectory.appending(path: "together.json")
+    private let file: URL
     private var loadFailed = false
 
-    init() {
+    init(file: URL = URL.documentsDirectory.appending(path: "together.json")) {
+        self.file = file
         guard FileManager.default.fileExists(atPath: file.path) else { return }
         do {
             let archive = try JSONDecoder().decode(Archive.self, from: Data(contentsOf: file))
@@ -71,6 +104,13 @@ final class MemoryStore: ObservableObject {
 
     func add(_ memory: Memory) -> Bool { commit(memories: memories + [memory], occasions: occasions) }
     func add(_ occasion: Occasion) -> Bool { commit(memories: memories, occasions: occasions + [occasion]) }
-    func delete(_ memory: Memory) { commit(memories: memories.filter { $0.id != memory.id }, occasions: occasions) }
+    func save(_ memory: Memory) -> Bool {
+        var updated = memories
+        if let index = updated.firstIndex(where: { $0.id == memory.id }) { updated[index] = memory }
+        else { updated.append(memory) }
+        return commit(memories: updated, occasions: occasions)
+    }
+    @discardableResult
+    func delete(_ memory: Memory) -> Bool { commit(memories: memories.filter { $0.id != memory.id }, occasions: occasions) }
     func delete(_ occasion: Occasion) { commit(memories: memories, occasions: occasions.filter { $0.id != occasion.id }) }
 }

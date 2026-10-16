@@ -15,6 +15,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Verify existing memories and multiple photo persistence
+        run: |
+          swiftc -target "$(uname -m)-apple-macosx14.0" -parse-as-library Together/MemoryStore.swift Tests/MemoryPersistenceChecks.swift -o /tmp/memory-checks
+          /tmp/memory-checks
       - name: Build for iOS Simulator
         run: |
           set -euo pipefail

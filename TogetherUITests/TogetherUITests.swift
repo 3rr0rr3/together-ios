@@ -26,6 +26,13 @@ final class TogetherUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[title].waitForExistence(timeout: 10))
         app.staticTexts[title].tap()
         XCTAssertTrue(app.buttons["Delete"].waitForExistence(timeout: 10))
+        app.buttons["Edit"].tap()
+        let editTitle = app.textFields["A name for this memory"]
+        XCTAssertTrue(editTitle.waitForExistence(timeout: 10))
+        XCTAssertEqual(editTitle.value as? String, title)
+        XCTAssertTrue(app.buttons["choosePhotos"].exists)
+        app.buttons["Save"].tap()
+        XCTAssertTrue(app.buttons["Edit"].waitForExistence(timeout: 10))
         app.buttons["Delete"].tap()
         app.buttons["Delete memory"].tap()
         XCTAssertTrue(app.navigationBars["Together"].waitForExistence(timeout: 10))

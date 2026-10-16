@@ -27,3 +27,7 @@ Add a photo memory, close and reopen the app, and verify that its image, text, a
 Photos are imported and stored locally, not uploaded to a server. Both partners cannot yet share the same collection. There are no accounts, cloud sync, scheduled notifications, or editing of existing entries in this starter. Removing the app removes its local data. Add cloud storage and partner invitations for a shared version; add an app icon and complete device testing before distribution.
 
 Annual February 29 occasions use the calendar’s next-time matching policy in non-leap years. The app stores compressed photos inside one JSON archive, suitable for an initial small collection; a larger library should use separate image files and a database.
+
+## Version 1.1
+
+Memories support up to 20 ordered photos, with a swipeable gallery and photo counts. Use Edit on a memory to change its text or add/remove photos. Existing single-photo archives load automatically without losing their original photos. The app uses a light blush-and-burgundy design for readable contrast. CI checks legacy migration and multi-photo persistence in addition to the simulator UI flows.

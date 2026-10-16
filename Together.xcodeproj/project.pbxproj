@@ -4,10 +4,22 @@
  classes = {};
  objectVersion = 56;
  objects = {
-  A00000000000000000000001 = {isa = PBXProject; attributes = {LastUpgradeCheck = 1600; }; buildConfigurationList = A00000000000000000000002; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = A00000000000000000000003; productRefGroup = A00000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (A00000000000000000000005); };
+B00000000000000000000001 = {isa = PBXNativeTarget; buildConfigurationList = B00000000000000000000002; buildPhases = (B00000000000000000000006); buildRules = (); dependencies = (B00000000000000000000010); name = TogetherUITests; productName = TogetherUITests; productReference = B00000000000000000000003; productType = "com.apple.product-type.bundle.ui-testing"; };
+B00000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (B00000000000000000000008, B00000000000000000000009); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+B00000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogetherUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+B00000000000000000000004 = {isa = PBXGroup; children = (B00000000000000000000005); path = TogetherUITests; sourceTree = "<group>"; };
+B00000000000000000000005 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogetherUITests.swift; sourceTree = "<group>"; };
+B00000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B00000000000000000000007); runOnlyForDeploymentPostprocessing = 0; };
+B00000000000000000000007 = {isa = PBXBuildFile; fileRef = B00000000000000000000005; };
+B00000000000000000000008 = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.example.together.uitests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; TEST_TARGET_NAME = Together;}; name = Debug; };
+B00000000000000000000009 = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.example.together.uitests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; TEST_TARGET_NAME = Together;}; name = Release; };
+B00000000000000000000010 = {isa = PBXTargetDependency; target = A00000000000000000000005; targetProxy = B00000000000000000000011; };
+B00000000000000000000011 = {isa = PBXContainerItemProxy; containerPortal = A00000000000000000000001; proxyType = 1; remoteGlobalIDString = A00000000000000000000005; remoteInfo = Together; };
+
+  A00000000000000000000001 = {isa = PBXProject; attributes = {LastUpgradeCheck = 1600; }; buildConfigurationList = A00000000000000000000002; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = A00000000000000000000003; productRefGroup = A00000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (A00000000000000000000005, B00000000000000000000001); };
   A00000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (A00000000000000000000006, A00000000000000000000007); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-  A00000000000000000000003 = {isa = PBXGroup; children = (A00000000000000000000008, A00000000000000000000004); sourceTree = "<group>"; };
-  A00000000000000000000004 = {isa = PBXGroup; children = (A00000000000000000000009); name = Products; sourceTree = "<group>"; };
+  A00000000000000000000003 = {isa = PBXGroup; children = (B00000000000000000000004, A00000000000000000000008, A00000000000000000000004); sourceTree = "<group>"; };
+  A00000000000000000000004 = {isa = PBXGroup; children = (A00000000000000000000009, B00000000000000000000003); name = Products; sourceTree = "<group>"; };
   A00000000000000000000005 = {isa = PBXNativeTarget; buildConfigurationList = A00000000000000000000010; buildPhases = (A00000000000000000000011, A00000000000000000000012, A00000000000000000000013); buildRules = (); dependencies = (); name = Together; productName = Together; productReference = A00000000000000000000009; productType = "com.apple.product-type.application"; };
   A00000000000000000000006 = {isa = XCBuildConfiguration; buildSettings = {SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; CLANG_ENABLE_MODULES = YES; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
   A00000000000000000000007 = {isa = XCBuildConfiguration; buildSettings = {SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; CLANG_ENABLE_MODULES = YES; SWIFT_COMPILATION_MODE = wholemodule; }; name = Release; };

@@ -16,7 +16,7 @@ A native SwiftUI iPhone starter app for a couple’s memories, targeting iOS 17 
 2. Select the Together target and an iPhone simulator, then press Run.
 3. To run on an iPhone, select your signing team under Signing & Capabilities and replace `com.example.together` with a unique bundle identifier.
 
-This project was created on Windows and has not been compiled or simulator-tested. It needs a Mac with Xcode for build and visual verification.
+The app has passed a GitHub Actions iOS Simulator build and launch check. CI also runs UI tests for blank-title validation and saving, reopening, and deleting memories and annual occasions. Photo-library interaction and visual verification still need device testing.
 
 ## Check on a device or simulator
 

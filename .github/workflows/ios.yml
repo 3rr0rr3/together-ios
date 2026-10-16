@@ -29,3 +29,9 @@ jobs:
           xcrun simctl launch "$DEVICE_ID" com.example.together
           sleep 5
           xcrun simctl spawn "$DEVICE_ID" launchctl list | grep com.example.together
+
+      - name: Test saving, reopening, and deleting
+        run: |
+          set -euo pipefail
+          DEVICE_ID=$(xcrun simctl list devices booted -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for devices in d["devices"].values() for x in devices if x["state"] == "Booted" and "iPhone" in x["name"]))')
+          xcodebuild -project Together.xcodeproj -scheme Together -configuration Debug -destination "platform=iOS Simulator,id=$DEVICE_ID" -derivedDataPath build -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test

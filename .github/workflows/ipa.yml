@@ -1,0 +1,49 @@
+name: Build sideload IPA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Together/**'
+      - 'Together.xcodeproj/**'
+      - '.github/workflows/ipa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ipa:
+    if: github.event.repository.private == false
+    runs-on: macos-15
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build unsigned iPhone app
+        run: |
+          set -euo pipefail
+          xcodebuild -project Together.xcodeproj -scheme Together -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath device-build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+      - name: Verify and package IPA
+        run: |
+          set -euo pipefail
+          APP=device-build/Build/Products/Release-iphoneos/Together.app
+          test -x "$APP/Together"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleSupportedPlatforms:0' "$APP/Info.plist")" = "iPhoneOS"
+          xcrun lipo -verify_arch arm64 "$APP/Together"
+          xcrun vtool -show-build "$APP/Together" | tee platform.txt
+          grep -Eq 'platform[[:space:]]+IOS$' platform.txt
+          mkdir -p package/Payload
+          ditto "$APP" package/Payload/Together.app
+          cd package
+          zip -qry ../Together-unsigned.ipa Payload
+          cd ..
+          unzip -t Together-unsigned.ipa
+          shasum -a 256 Together-unsigned.ipa > Together-unsigned.ipa.sha256
+      - name: Publish downloadable IPA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          TAG="sideload-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
+          printf '%s\n' 'Unsigned iPhone build, iOS 17 or later.' 'Import Together-unsigned.ipa into a sideloader that signs apps with your Apple account or signing certificate.' 'This package has been verified as an arm64 iPhoneOS build. Physical-device installation still requires verification.' > release-notes.txt
+          gh release create "$TAG" Together-unsigned.ipa Together-unsigned.ipa.sha256 --target "$GITHUB_SHA" --title "Together sideload build ${GITHUB_RUN_NUMBER}" --prerelease --notes-file release-notes.txt

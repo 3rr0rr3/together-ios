@@ -1,14 +1,22 @@
 import SwiftUI
 import PhotosUI
 
-private let rose = Color(red: 0.57, green: 0.18, blue: 0.30)
-private let blush = Color(red: 0.98, green: 0.87, blue: 0.87)
-private let cream = Color(red: 1, green: 0.97, blue: 0.94)
-private let ink = Color(red: 0.25, green: 0.13, blue: 0.17)
+private let rose = Color(red: 0.58, green: 0.16, blue: 0.31)
+private let blush = Color(red: 0.98, green: 0.80, blue: 0.85)
+private let cream = Color(red: 1, green: 0.96, blue: 0.92)
+private let ink = Color(red: 0.28, green: 0.10, blue: 0.18)
+
+private let petal = Color(red: 1, green: 0.94, blue: 0.95)
+
+private func romanticTitle(_ size: CGFloat, relativeTo style: Font.TextStyle) -> Font {
+    // A built-in calligraphic face, with a readable serif fallback.
+    let name = UIFont(name: "SnellRoundhand-Bold", size: size) != nil ? "SnellRoundhand-Bold" : "Georgia-BoldItalic"
+    return .custom(name, size: size, relativeTo: style)
+}
 
 private struct LoveBackground: View {
     var body: some View {
-        LinearGradient(colors: [cream, blush.opacity(0.65), cream], startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(colors: [cream, petal, blush.opacity(0.85)], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
     }
 }
@@ -28,9 +36,9 @@ struct ContentView: View {
                             Label("A LOVE STORY, STILL UNFOLDING", systemImage: "heart.fill")
                                 .font(.caption2.weight(.semibold)).tracking(1.5).foregroundStyle(rose)
                             Text("Every little moment.\nAlways, us.")
-                                .font(.system(.largeTitle, design: .serif).weight(.medium)).foregroundStyle(ink)
+                                .font(romanticTitle(42, relativeTo: .largeTitle)).lineSpacing(6).foregroundStyle(ink)
                             Text("A place for the days we never want to forget.")
-                                .font(.subheadline).foregroundStyle(ink.opacity(0.75))
+                                .font(.custom("Georgia", size: 16, relativeTo: .subheadline)).foregroundStyle(ink.opacity(0.75))
                             HStack(spacing: 8) {
                                 Image(systemName: "heart")
                                 Text("\(store.memories.count) memories tucked away")
@@ -59,14 +67,15 @@ struct ContentView: View {
                                             }
                                         }
                                     VStack(alignment: .leading, spacing: 8) {
-                                        Text(memory.title).font(.system(.title2, design: .serif)).foregroundStyle(ink)
+                                        Text(memory.title).font(.custom("Georgia-Italic", size: 24, relativeTo: .title2)).foregroundStyle(ink)
                                         Label(memory.date.formatted(date: .abbreviated, time: .omitted), systemImage: "heart")
                                             .font(.caption).foregroundStyle(rose)
                                         if !memory.note.isEmpty {
-                                            Text(memory.note).font(.subheadline).foregroundStyle(ink.opacity(0.75)).lineLimit(2)
+                                            Text(memory.note).font(.custom("Georgia", size: 16, relativeTo: .subheadline)).foregroundStyle(ink.opacity(0.75)).lineLimit(2)
                                         }
                                     }.padding(.horizontal, 8).padding(.bottom, 10)
-                                }.padding(12).background(.white, in: RoundedRectangle(cornerRadius: 22))
+                                }.padding(12).background(petal, in: RoundedRectangle(cornerRadius: 22))
+                                    .overlay(RoundedRectangle(cornerRadius: 22).strokeBorder(rose.opacity(0.16), lineWidth: 1))
                                     .shadow(color: rose.opacity(0.08), radius: 12, y: 5)
                             }.buttonStyle(.plain)
                         }
@@ -86,9 +95,9 @@ struct ContentView: View {
                     Section {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Some days belong to us.")
-                                .font(.system(.title2, design: .serif)).foregroundStyle(ink)
+                                .font(.custom("Georgia-Italic", size: 24, relativeTo: .title2)).foregroundStyle(ink)
                             Text("Firsts, forever promises, and reasons to celebrate.")
-                                .font(.subheadline).foregroundStyle(rose)
+                                .font(.custom("Georgia", size: 16, relativeTo: .subheadline)).foregroundStyle(rose)
                         }.padding(.vertical, 12)
                     }.listRowBackground(Color.clear)
                     if store.occasions.isEmpty {
@@ -100,13 +109,13 @@ struct ContentView: View {
                             Image(systemName: "heart.fill").font(.title2).foregroundStyle(rose)
                                 .frame(width: 48, height: 48).background(blush, in: RoundedRectangle(cornerRadius: 16))
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(occasion.title).font(.system(.headline, design: .serif)).foregroundStyle(ink)
-                                Text(occasion.nextDate.formatted(date: .abbreviated, time: .omitted)).font(.subheadline).foregroundStyle(.secondary)
+                                Text(occasion.title).font(.custom("Georgia-BoldItalic", size: 18, relativeTo: .headline)).foregroundStyle(ink)
+                                Text(occasion.nextDate.formatted(date: .abbreviated, time: .omitted)).font(.custom("Georgia", size: 16, relativeTo: .subheadline)).foregroundStyle(.secondary)
                                 if occasion.repeatsYearly { Text("Every year").font(.caption).foregroundStyle(rose) }
                             }
                             Spacer()
                             Text(dayLabel(occasion.nextDate)).font(.caption.weight(.semibold)).foregroundStyle(rose).multilineTextAlignment(.trailing)
-                        }.padding(.vertical, 10).listRowBackground(Color.white)
+                        }.padding(.vertical, 10).listRowBackground(petal)
                             .swipeActions { Button("Delete", role: .destructive) { store.delete(occasion) } }
                     }
                 }.scrollContentBackground(.hidden).background(LoveBackground()).navigationTitle("Special dates")
@@ -132,7 +141,7 @@ struct ContentView: View {
 private func emptyState(_ title: String, subtitle: String, icon: String) -> some View {
     VStack(spacing: 14) {
         Image(systemName: icon).font(.system(size: 40)).foregroundStyle(rose)
-        Text(title).font(.system(.title3, design: .serif)).foregroundStyle(ink)
+        Text(title).font(.custom("Georgia-Italic", size: 22, relativeTo: .title3)).foregroundStyle(ink)
         Text(subtitle).foregroundStyle(ink.opacity(0.7)).multilineTextAlignment(.center)
     }.frame(maxWidth: .infinity).padding(.vertical, 32)
 }
@@ -185,9 +194,9 @@ private struct MemoryDetail: View {
                         }
                     }
                     Label("A LITTLE PIECE OF US", systemImage: "heart.fill").font(.caption2).tracking(2).foregroundStyle(rose)
-                    Text(memory.title).font(.system(.largeTitle, design: .serif)).foregroundStyle(ink)
+                    Text(memory.title).font(romanticTitle(40, relativeTo: .largeTitle)).foregroundStyle(ink)
                     Text(memory.date.formatted(date: .long, time: .omitted)).foregroundStyle(rose)
-                    Text(memory.note).foregroundStyle(ink).lineSpacing(6)
+                    Text(memory.note).font(.custom("Georgia", size: 18, relativeTo: .body)).foregroundStyle(ink).lineSpacing(7)
                 }.padding(24)
             }.background(LoveBackground()).toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
